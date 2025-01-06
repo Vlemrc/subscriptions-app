@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'DigitalSansThinItalic';
+  src: url('../assets/fonts/DigitalSans-ThinItalic.woff2') format('woff2'),
+    url('../assets/fonts/DigitalSans-ThinItalic.woff') format('woff'),
+    url('../assets/fonts/DigitalSans-ThinItalic.otf') format('opentype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'DigitalSansRegularItalic';
+  src: url('../assets/fonts/DigitalSans-RegularItalic.woff2') format('woff2');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'DigitalSansRegular';
+  src: url('../assets/fonts/DigitalSans-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'DigitalSansMediumItalic';
+  src: url('../assets/fonts/DigitalSans-MediumItalic.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'DigitalSansMedium';
+  src: url('../assets/fonts/DigitalSans-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'DigitalSansLightItalic';
+  src: url('../assets/fonts/DigitalSans-LightItalic.woff') format('woff');
+  font-weight: 300;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'DigitalSansLight';
+  src: url('../assets/fonts/DigitalSans-Light.woff') format('woff');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'DigitalSansExtraLight';
+  src: url('../assets/fonts/DigitalSans-ExtraLight.woff2') format('woff2');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'DigitalSansExtraLightItalic';
+  src: url('../assets/fonts/DigitalSans-ExtraLightItalic.otf') format('opentype');
+  font-weight: 200;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'DigitalSansBoldItalic';
+  src: url('../assets/fonts/DigitalSans-BoldItalic.woff') format('woff');
+  font-weight: bold;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'DigitalSansBold';
+  src: url('../assets/fonts/DigitalSans-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+input::placeholder {
+  color: #94A3B8;
+}
+
+body {
+  font-family:"DigitalSansRegular", sans-serif;
+}
