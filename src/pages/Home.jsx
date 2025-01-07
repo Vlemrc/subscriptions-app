@@ -8,12 +8,13 @@ import Logo from '../components/Logo';
 const Home = () => {
   const dispatch = useDispatch();
   const subscriptions = useSelector((state) => state.subscriptions.subscriptions);
+  const user = useSelector((state) => state.auth.user); 
 
   useEffect(() => {
     // Je récupère mes abonnements
     const fetchSubscriptions = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/subscriptions'); // Mettre URL Backend
+        const response = await fetch(`http://localhost:5000/api/subscriptions?userId=${user.id}`); // Mettre URL Backend
         const data = await response.json();
         dispatch(setSubscriptions(data)); // REDUX
       } catch (error) {
@@ -21,12 +22,21 @@ const Home = () => {
       }
     };
 
-    fetchSubscriptions();
-  }, [dispatch]);
+    if (user && user.id) {
+      fetchSubscriptions();
+    }
+  }, [dispatch, user]);
 
   return (
     <div className="bg-background h-full">
-      <div className="w-full flex justify-center pt-8 pb-4"><Logo className="w-24 lg:w-0" /></div>
+      <div className="w-full flex justify-center pt-8 pb-4">
+        <Logo className="w-24 lg:w-0" />
+      </div>
+      <div className="w-full flex justify-center pb-4">
+        <p className="text-lg font-digitalSansMediumItalic">
+          Bienvenue, {user?.email} (ID: {user?.id})
+        </p>
+      </div>
       <Navbar activeItem="home" />
       <div className="p-6">
         <h1 className="pb-2.5 text-2xl font-digitalSansMediumItalic">Mes abonnements</h1>

@@ -1,34 +1,49 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../redux/authActions';
+import { useDispatch } from 'react-redux';
+import { registerUser } from '../redux/authActions';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import Logo from '../components/Logo';
 
-const Login = () => {
+const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
-    dispatch(loginUser({ email, password }));
-    navigate('/'); // Redirige vers la home après connexion
+    dispatch(registerUser({ email, password, firstName, lastName }));
+    navigate('/'); // Redirige vers la home après inscription
   };
-
-  if (isAuthenticated) {
-    return <p>Vous êtes déjà connecté.</p>;
-  }
 
   return (
     <div className="flex flex-col items-center justify-center h-full p-6">
       <div className="lg:w-1/3 w-full">
         <div className="w-full flex items-center justify-center mb-10"><Logo className="w-24" /></div>
-        <h1 className="text-2xl font-digitalSansMediumItalic">Connexion</h1>
+        <h1 className="text-2xl font-digitalSansMediumItalic">S&apos;inscrire</h1>
         <p className="mb-5 text-slate-400">Entre tes informations personnelles</p>
-        <form onSubmit={handleLogin} className="flex flex-col gap-2 w-full">
+        <form onSubmit={handleRegister} className="flex flex-col gap-2 w-full">
+          <label htmlFor="firstName" className="font-digitalSansMediumItalic text-md">Prénom</label>
+          <input
+            type="text"
+            placeholder="Prénom"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="lastName" className="font-digitalSansMediumItalic text-md">Nom</label>
+          <input
+            type="text"
+            placeholder="Nom"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
           <label htmlFor="email" className="font-digitalSansMediumItalic text-md">Email</label>
           <input
             type="email"
@@ -47,15 +62,14 @@ const Login = () => {
             required
             className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
           />
-          <p className="tracking-tighter text-slate-400 text-xs text-right font-digitalSansMedium text-darkgray mb-8">Mot de passe oublié ?</p>
-          <Button>Se connecter</Button>
+          <Button>S&apos;inscrire</Button>
         </form>
         <p className="mt-4 text-center">
-          Pas encore de compte ? <button onClick={() => navigate('/register')} className="text-blue-500">S&apos;inscrire</button>
+          Déjà un compte ? <button onClick={() => navigate('/login')} className="text-blue-500">Se connecter</button>
         </p>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default Register;
