@@ -29,13 +29,8 @@ const Home = () => {
 
   return (
     <div className="bg-background h-full">
-      <div className="w-full flex justify-center pt-8 pb-4">
+      <div className="w-full flex justify-center pt-8 lg:p-0 pb-4">
         <Logo className="w-24 lg:w-0" />
-      </div>
-      <div className="w-full flex justify-center pb-4">
-        <p className="text-lg font-digitalSansMediumItalic">
-          Bienvenue, {user?.email} (ID: {user?.id})
-        </p>
       </div>
       <Navbar activeItem="home" />
       <div className="p-6">

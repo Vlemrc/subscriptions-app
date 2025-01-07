@@ -44,9 +44,9 @@ function App() {
           <Route 
             path="/add-subscription" 
             element={
-              <PrivateRoute>
+              // <PrivateRoute>
                 <AddSubscription />
-              </PrivateRoute>
+              // </PrivateRoute>
             } 
           />
         </Routes>

@@ -85,12 +85,12 @@ const AddSubscription = () => {
             />
           </div>
           <div className="flex flex-col gap-2.5">
-            <label className="font-digitalSansMediumItalic text-md">Durée</label>
+            <label className="font-digitalSansMediumItalic text-md">Durée (en mois)</label>
             <input
-              type="string"
+              type="number"
               value={duration}
               onChange={(e) => setDuration(e.target.value)}
-              placeholder="12 mois"
+              placeholder="12"
               required
               className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
             />
