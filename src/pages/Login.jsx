@@ -22,7 +22,7 @@ const Login = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center h-full">
+    <div className="flex flex-col items-center justify-center h-full p-6">
       <div className="lg:w-1/3 w-full">
         <h1 className="text-2xl font-digitalSansMediumItalic">S&apos;inscrire</h1>
         <p className="mb-5 text-slate-400">Entre tes informations personnelles</p>
@@ -34,7 +34,7 @@ const Login = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className='mb-2 border border-gray-300 pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
           />
           <label htmlFor="password" className="font-digitalSansMediumItalic text-md">Mot de passe</label>
           <input
@@ -43,9 +43,9 @@ const Login = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className='mb-2 border border-gray-300 pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
           />
-          <p className="tracking-tighter text-slate-400 text-xs text-right font-digitalSansMedium text-darkgray">Mot de passe oublié ?</p>
+          <p className="tracking-tighter text-slate-400 text-xs text-right font-digitalSansMedium text-darkgray mb-8">Mot de passe oublié ?</p>
           <Button>Se connecter</Button>
         </form>
       </div>

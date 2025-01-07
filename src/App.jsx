@@ -3,7 +3,9 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import Account from './pages/Account';
 import PropTypes from 'prop-types';
+import AddSubscription from './pages/AddSubscription';
 
 function App() {
   
@@ -26,6 +28,22 @@ function App() {
             element={
               <PrivateRoute>
                 <Home />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/account" 
+            element={
+              <PrivateRoute>
+                <Account />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/add-subscription" 
+            element={
+              <PrivateRoute>
+                <AddSubscription />
               </PrivateRoute>
             } 
           />

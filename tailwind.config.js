@@ -5,11 +5,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: '#F3F3F3',
+        background: '#F7F8FA',
         blue: '#001682',
         primary: '#1A1A1A',
         secondary: '#94A3B8',
         darkgray:'#777777',
+        border: '#F3F3F3',
       },
       fontFamily: {
         digitalSansThinItalic: ['DigitalSansThinItalic', 'sans-serif'],
