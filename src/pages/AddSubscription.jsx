@@ -11,13 +11,18 @@ const AddSubscription = () => {
   const [price, setPrice] = useState('');
   const [duration, setDuration] = useState('');
   const [startDate, setStartDate] = useState('');
-  const userId = useSelector((state) => state.auth.user.id);
+  const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!user) {
+      console.error('Utilisateur non connecté');
+      return;
+    }
+
     const newSubscription = {
-      utilisateur_id: userId,
+      utilisateur_id: user.id,
       nom_service: name,
       date_debut: startDate,
       montant: price,
@@ -25,12 +30,12 @@ const AddSubscription = () => {
     };
 
     try {
-        const response = await fetch('http://localhost:5000/api/subscriptions', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(newSubscription),
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/subscriptions`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newSubscription),
         });
 
         if (!response.ok) {
@@ -46,10 +51,10 @@ const AddSubscription = () => {
 
   return (
     <div>
-      <div className="w-full flex justify-center p-8 bg-background"><Logo className="w-24 lg:w-0" /></div>
+      <div className="w-full flex justify-center p-8 lg:p-0 bg-background"><Logo className="w-24 lg:w-0" /></div>
       <Navbar activeItem="add-subscription" />
       <div className="bg-background">
-        <h1 className="pb-2.5 text-2xl mx-6 font-digitalSansMediumItalic">Ajouter un abonnement</h1>
+        <h1 className="pb-2.5 text-2xl lg:pt-8 mx-6 font-digitalSansMediumItalic">Ajouter un abonnement</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-5 bg-white m-6 mt-0 p-6 rounded-md">
           <div className="flex flex-col gap-2.5">
             <label className="font-digitalSansMediumItalic text-md">Nom de l&apos;abonnement</label>
@@ -74,7 +79,7 @@ const AddSubscription = () => {
             </div>
           </div>
           <div className="flex flex-col gap-2.5">
-            <label className="font-digitalSansMediumItalic text-md">Prix (€)</label>
+            <label className="font-digitalSansMediumItalic text-md">Prix (en €)</label>
             <input
               type="number"
               value={price}
