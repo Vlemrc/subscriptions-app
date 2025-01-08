@@ -7,6 +7,7 @@ import Account from './pages/Account';
 import PropTypes from 'prop-types';
 import AddSubscription from './pages/AddSubscription';
 import Register from './pages/Register';
+import Subscription from './components/Subscription';
 
 function App() {
   
@@ -25,6 +26,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/test" element={<Subscription />} />
           <Route 
             path="/" 
             element={

@@ -7,14 +7,32 @@ import Logo from '../components/Logo';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const subscriptions = useSelector((state) => state.subscriptions.subscriptions);
+  // const subscriptions = useSelector((state) => state.subscriptions.subscriptions);
   const user = useSelector((state) => state.auth.user); 
+
+  const subscriptions = [
+    {
+      
+      name: 'Netflix',
+      frequency: 'mensuel',
+      price: 12.99,
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Netflix_2015_logo.svg/1200px-Netflix_2015_logo.svg.png',
+      contractUrl: 'https://example.com/contract/netflix.pdf'
+    },
+    {
+      name: 'Spotify',
+      frequency: 'annuel',
+      price: 119.99,
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/1200px-Spotify_logo_without_text.svg.png',
+      contractUrl: 'https://example.com/contract/spotify.pdf'
+    },
+  ]
 
   useEffect(() => {
     // Je récupère mes abonnements
     const fetchSubscriptions = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/subscriptions?userId=${user.id}`); // Mettre URL Backend
+        const response = await fetch(`http://urlbackend?userId=${user.id}`); // Mettre URL Backend
         const data = await response.json();
         dispatch(setSubscriptions(data)); // REDUX
       } catch (error) {
@@ -26,6 +44,10 @@ const Home = () => {
       fetchSubscriptions();
     }
   }, [dispatch, user]);
+
+  const handleManageClick = (subscription) => {
+    history.push('/subscription', { subscription });
+  };
 
   return (
     <div className="bg-background h-full">
@@ -47,7 +69,7 @@ const Home = () => {
                 </div>
               </div>
               <div className="w-20 flex items-center justify-center">
-                <Button className="text-xs rounded-md">Gérer</Button>
+                <Button className="text-xs rounded-md" onClick={() => handleManageClick(item)}>Gérer</Button>
               </div>
             </div>
           ))}

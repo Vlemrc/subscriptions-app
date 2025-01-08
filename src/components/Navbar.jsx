@@ -9,7 +9,7 @@ const Navbar = ({ activeItem }) => {
   return (
     <nav className="navbar flex items-center justify-center fixed bottom-0 left-0 w-full h-[80px] px-6 bg-white shadow-md lg:relative lg:justify-between">
       <Logo className="w-0 lg:w-24" />
-      <ul className="flex flex-row justify-center items-center gap-3">
+      <ul className="flex flex-row justify-center items-center gap-3 lg:gap-8">
         <li className={classNames("h-12 w-12 flex items-center justify-center rounded-full lg:h-auto lg:w-auto", { "bg-blue text-white": activeItem === 'home' })}>
           <button onClick={() => navigate('/')} className="w-6 h-6 -mt-0.5 lg:h-auto lg:w-auto">
             <svg className="lg:hidden" width="24" height="24" viewBox="0 0 24 24" fill={activeItem === 'home' ? "#fff" : "#94A3B8"} xmlns="http://www.w3.org/2000/svg">
