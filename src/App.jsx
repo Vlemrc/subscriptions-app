@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from './redux/store';
+
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Account from './pages/Account';
@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import AddSubscription from './pages/AddSubscription';
 import Register from './pages/Register';
 import Subscription from './components/Subscription';
+import store from './redux/combineReducer';
 
 function App() {
   

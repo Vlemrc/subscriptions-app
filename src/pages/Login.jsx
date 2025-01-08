@@ -1,26 +1,32 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../redux/authActions';
 import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import Logo from '../components/Logo';
+import utilisateursService from '../../services/utilisateurs/utilisateursServicesApi';
 
 const Login = () => {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const [motDePasse, setMotDePasse] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { loading, error, success, utilisateur } = useSelector((state) => state.login || {});
 
   const handleLogin = (e) => {
     e.preventDefault();
-    dispatch(loginUser({ email, password }));
-    navigate('/'); // Redirige vers la home après connexion
-  };
-
-  if (isAuthenticated) {
-    return <p>Vous êtes déjà connecté.</p>;
+    const userData = {
+      email,
+      motDePasse,
+    };
+    dispatch(utilisateursService.connexionUserService(userData));
   }
+  useEffect(() => {
+    if (success) {
+      navigate('/account'); 
+    }
+  }, [success, navigate]); 
+  
+  console.log(utilisateur) // tu auras les infos comme le token etc tu devras stocké certaines infos car tu en auras besoin
 
   return (
     <div className="flex flex-col items-center justify-center h-full p-6">
@@ -42,14 +48,17 @@ const Login = () => {
           <input
             type="password"
             placeholder="Mot de passe"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={motDePasse}
+            onChange={(e) => setMotDePasse(e.target.value)}
             required
             className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
           />
           <p className="tracking-tighter text-slate-400 text-xs text-right font-digitalSansMedium text-darkgray mb-8">Mot de passe oublié ?</p>
           <Button>Se connecter</Button>
         </form>
+        {loading && <p>Connexion en cours...</p>}
+        {success && <p>Connexion réussie !</p>}
+        {error && <p style={{ color: 'red' }}>{error}</p>}
         <p className="mt-4 text-center">
           Pas encore de compte ? <button onClick={() => navigate('/register')} className="text-blue-500">S&apos;inscrire</button>
         </p>
