@@ -1,34 +1,39 @@
 import PathUtilisateursApi from "./utilisateursConstantesRoutesApi";
+import { registerRequest, registerSuccess, registerFailure } from '../../src/redux/register/registerActions';
+import { loginFailure, loginRequest, loginSuccess } from "../../src/redux/login/loginActions";
+
 
 // Appel au service de création d'un utilisateur.
-const createUserService = (token, userData) => {
-    return async () => {
+const createUserService = (userData) => {
+    return async (dispatch) => {
+        dispatch(registerRequest());
         try {
             const response = await fetch(PathUtilisateursApi.CREATE_USER, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
                 },
                 body: JSON.stringify(userData),
             });
 
             if (!response.ok) {
-                throw new Error('Erreur lors de la création de l\'utilisateur');
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Erreur lors de la création de l\'utilisateur');
             }
-
             const data = await response.json();
-            return data;
-
+            dispatch(registerSuccess(data));
         } catch (error) {
+            dispatch(registerFailure(error.message)); 
             console.error("Erreur d'appel API pour créer l'utilisateur :", error);
         }
     };
 };
 
+
 // Appel au service de connexion d'un utilisateur.
 const connexionUserService = (userCredentials) => {
-    return async () => {
+    return async (dispatch) => {
+        dispatch(loginRequest());
         try {
             const response = await fetch(PathUtilisateursApi.CONNEXION_USER, {
                 method: 'POST',
@@ -41,12 +46,11 @@ const connexionUserService = (userCredentials) => {
             if (!response.ok) {
                 throw new Error('Erreur lors de la connexion de l\'utilisateur');
             }
-
             const data = await response.json();
-            return data;
-
+            dispatch(loginSuccess(data));
         } catch (error) {
             console.error("Erreur d'appel API pour la connexion de l'utilisateur :", error);
+            dispatch(loginFailure(error.message)); 
         }
     };
 };

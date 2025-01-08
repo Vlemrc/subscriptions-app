@@ -5,7 +5,7 @@ import { logout } from '../redux/authSlice';
 import Logo from '../components/Logo';
 
 const Account = () => {
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state?.register);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
