@@ -11,8 +11,6 @@ const Subscription = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const handleSave = (updatedSubscription) => {
-    // Logic to save the updated subscription
-    // For now, we just log it to the console
     console.log('Updated subscription:', updatedSubscription);
     setIsEditing(false);
   };
