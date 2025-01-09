@@ -1,20 +1,48 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addSubscription } from '../redux/subscriptionSlice';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Logo from '../components/Logo';
 import Button from '../components/Button';
+import abonnementsService from '../../services/abonnements/abonnementsServicesApi';
 
 const AddSubscription = () => {
   const [name, setName] = useState('');
-  const [frequency, setFrequency] = useState('mensuel');
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [postalCode, setPostalCode] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [price, setPrice] = useState('');
   const [duration, setDuration] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const user = useSelector((state) => state.auth.user);
-  const dispatch = useDispatch();
+  const [phone, setPhone] = useState('');
+  const [clientNumber, setClientNumber] = useState('');
+  const [status, setStatus] = useState('actif');
 
-  const handleSubmit = async (e) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const userInfos = useSelector((state) => state.login || {});
+  const user = userInfos.utilisateur.utilisateur;
+  const token = userInfos.utilisateur.token;
+
+  const { loading, error, success } = useSelector((state) => state.subscriptions || {});
+
+  const resetForm = () => {
+    setName('');
+    setAddress('');
+    setCity('');
+    setPostalCode('');
+    setStartDate('');
+    setEndDate('');
+    setPrice('');
+    setDuration('');
+    setPhone('');
+    setClientNumber('');
+    setStatus('actif');
+  };
+
+  const handleAddSubscription = (e) => {
     e.preventDefault();
     if (!user) {
       console.error('Utilisateur non connecté');
@@ -22,32 +50,34 @@ const AddSubscription = () => {
     }
 
     const newSubscription = {
-      utilisateur_id: user.id,
+      utilisateur_id: user._id,
       nom_service: name,
+      adresse: address,
+      ville: city,
+      codePostal: postalCode,
       date_debut: startDate,
+      date_fin: endDate,
       montant: price,
       duree: duration,
+      telephone: phone,
+      numeroClient: clientNumber,
+      statut: status,
     };
+    dispatch(abonnementsService.createAbonnementService(token, newSubscription));
 
-    try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/subscriptions`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(newSubscription),
-        });
 
-        if (!response.ok) {
-            throw new Error('Erreur lors de l\'envoi des données');
-        }
+    if (success) {
+      navigate('/');
+    }
+  };
 
-        const data = await response.json();
-            dispatch(addSubscription(data));
-        } catch (error) {
-            console.error('Erreur lors de l\'envoi des données :', error);
-        }
-    };
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        dispatch(resetForm());
+      }, 3000); 
+    }
+  }, [success, dispatch]);
 
   return (
     <div>
@@ -55,63 +85,110 @@ const AddSubscription = () => {
       <Navbar activeItem="add-subscription" />
       <div className="bg-background">
         <h1 className="pb-2.5 text-2xl lg:pt-8 mx-6 font-digitalSansMediumItalic">Ajouter un abonnement</h1>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5 bg-white m-6 mt-0 p-6 rounded-md">
-          <div className="flex flex-col gap-2.5">
-            <label className="font-digitalSansMediumItalic text-md">Nom de l&apos;abonnement</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Nom de ton nouvel abonnement"
-              required
-              className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
-            />
-          </div>
-          <div className="flex flex-col gap-2.5">
-            <label className="font-digitalSansMediumItalic text-md">Type d&apos;abonnement</label>
-            <div className="relative">
-                <select value={frequency} style={{ WebkitAppearance: 'none', MozAppearance: 'none' }} onChange={(e) => setFrequency(e.target.value)} className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'>
-                    <option value="mensuel">Mensuel</option>
-                    <option value="annuel">Annuel</option>
-                </select>
-                <div className="h-0.5 w-2 bg-black absolute right-6 top-1/2 -translate-y-1/2 -mt-0.5 rotate-45"></div>
-                <div className="h-0.5 w-2 bg-black absolute right-5 top-1/2 -translate-y-1/2 -mt-0.5 -rotate-45"></div>
-            </div>
-          </div>
-          <div className="flex flex-col gap-2.5">
-            <label className="font-digitalSansMediumItalic text-md">Prix (en €)</label>
-            <input
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              placeholder="19.99"
-              required
-              className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
-            />
-          </div>
-          <div className="flex flex-col gap-2.5">
-            <label className="font-digitalSansMediumItalic text-md">Durée (en mois)</label>
-            <input
-              type="number"
-              value={duration}
-              onChange={(e) => setDuration(e.target.value)}
-              placeholder="12"
-              required
-              className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
-            />
-          </div>
-          <div className="flex flex-col gap-2.5">
-            <label className="font-digitalSansMediumItalic text-md">Date de début</label>
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              required
-              className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
-            />
-          </div>
+        <form onSubmit={handleAddSubscription} className="flex flex-col gap-5 bg-white m-6 mt-0 p-6 rounded-md">
+          <label htmlFor="name" className="font-digitalSansMediumItalic text-md">Nom de l&apos;abonnement</label>
+          <input
+            type="text"
+            placeholder="Nom"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="address" className="font-digitalSansMediumItalic text-md">Adresse</label>
+          <input
+            type="text"
+            placeholder="Adresse"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="city" className="font-digitalSansMediumItalic text-md">Ville</label>
+          <input
+            type="text"
+            placeholder="Ville"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="postalCode" className="font-digitalSansMediumItalic text-md">Code Postal</label>
+          <input
+            type="text"
+            placeholder="Code Postal"
+            value={postalCode}
+            onChange={(e) => setPostalCode(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="startDate" className="font-digitalSansMediumItalic text-md">Date de début</label>
+          <input
+            type="date"
+            placeholder="Date de début"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="endDate" className="font-digitalSansMediumItalic text-md">Date de fin</label>
+          <input
+            type="date"
+            placeholder="Date de fin"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="price" className="font-digitalSansMediumItalic text-md">Prix</label>
+          <input
+            type="number"
+            placeholder="Prix"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="duration" className="font-digitalSansMediumItalic text-md">Durée (en mois)</label>
+          <input
+            type="number"
+            placeholder="Durée"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="phone" className="font-digitalSansMediumItalic text-md">Téléphone</label>
+          <input
+            type="text"
+            placeholder="Téléphone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="clientNumber" className="font-digitalSansMediumItalic text-md">Numéro Client</label>
+          <input
+            type="text"
+            placeholder="Numéro Client"
+            value={clientNumber}
+            onChange={(e) => setClientNumber(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="status" className="font-digitalSansMediumItalic text-md">Statut</label>
+          <input
+            type="text"
+            placeholder="Statut"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
           <Button type="submit" className="mb-20">Ajouter</Button>
         </form>
+        {loading && <p>Chargement...</p>}
+        {error && <p className="text-red-500">{error}</p>}
       </div>
     </div>
   );
