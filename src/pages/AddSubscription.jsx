@@ -17,7 +17,6 @@ const AddSubscription = () => {
   const [duration, setDuration] = useState('');
   const [phone, setPhone] = useState('');
   const [clientNumber, setClientNumber] = useState('');
-  const [expiration, setExpiration] = useState('');
   const [status, setStatus] = useState('actif');
 
   const dispatch = useDispatch();
@@ -40,7 +39,6 @@ const AddSubscription = () => {
     setDuration('');
     setPhone('');
     setClientNumber('');
-    setExpiration('');
     setStatus('actif');
   };
 
@@ -63,7 +61,6 @@ const AddSubscription = () => {
       duree: duration,
       telephone: phone,
       numeroClient: clientNumber,
-      expirationDans: expiration,
       statut: status,
     };
     console.log(newSubscription);
@@ -177,15 +174,6 @@ const AddSubscription = () => {
             placeholder="Numéro Client"
             value={clientNumber}
             onChange={(e) => setClientNumber(e.target.value)}
-            required
-            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
-          />
-          <label htmlFor="expiration" className="font-digitalSansMediumItalic text-md">Expiration Dans</label>
-          <input
-            type="text"
-            placeholder="Expiration Dans"
-            value={expiration}
-            onChange={(e) => setExpiration(e.target.value)}
             required
             className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
           />
