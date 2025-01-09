@@ -5,12 +5,17 @@ import Button from '../components/Button';
 import Logo from '../components/Logo';
 import Subscription from '../components/Subscription'; // Importez le composant Subscription
 import abonnementsService from '../../services/abonnements/abonnementsServicesApi';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const userInfos = useSelector((state) => state.login || {});
-  const user = userInfos.utilisateur.utilisateur;
-  const token = userInfos.utilisateur.token;
+  const navigate = useNavigate();
+
+  const userInfos = useSelector((state) => state?.login) || {};
+  const userStorage = JSON.parse(localStorage.getItem("user")) || {};
+
+  const user = userInfos?.utilisateur || userStorage?.utilisateur || null;
+  const token = userInfos?.token || userStorage?.token || null;
 
   const [subscriptions, setSubscriptions] = useState([]);
   const [selectedSubscription, setSelectedSubscription] = useState(null);
@@ -18,9 +23,10 @@ const Home = () => {
 
   useEffect(() => {
     const fetchAbonnements = async () => {
-      if (token && user._id) {
+      if (token && user && user._id) {
         try {
           const result = await dispatch(abonnementsService.getAllAbonnementsByUserIdService(token, user._id));
+          localStorage.setItem("abonnements", JSON.stringify(result)); 
           setSubscriptions(result); 
         } catch (error) {
           console.error('Erreur lors de la récupération des abonnements:', error);
@@ -29,12 +35,13 @@ const Home = () => {
     };
 
     fetchAbonnements();
-  }, [dispatch, token, user._id]);
+  }, [dispatch, token, user?._id]);
 
-  const { loading, error } = useSelector((state) => state.subscriptions || {});
+  const { loading, error } = useSelector((state) => state?.subscriptions || {});
 
   const handleEditClick = (subscription) => {
     console.log('handleEditClick called with:', subscription);
+    navigate('/details-abonnement');
     setSelectedSubscription(subscription);
     setIsVisibleSub(true);
   };
@@ -56,12 +63,12 @@ const Home = () => {
           <div className="p-6">
             <h1 className="pb-2.5 text-2xl font-digitalSansMediumItalic">Mes abonnements</h1>
             <div className="flex flex-col gap-5">
-              {subscriptions.map((item, index) => (
+              {subscriptions?.map((item, index) => (
                 <div key={index} className="flex-row flex justify-between bg-white p-4 rounded-lg shadow-md">
                   <div className="flex flex-row gap-2.5 items-center">
                     <div className="flex flex-col">
-                      <p className="font-digitalSansMediumItalic">{item.nom_service}</p>
-                      <p className="text-xs mt-0.5">{item.montant} €</p>
+                      <p className="font-digitalSansMediumItalic">{item?.nom_service}</p>
+                      <p className="text-xs mt-0.5">{item?.montant} €</p>
                     </div>
                   </div>
                   <div className="w-20 flex items-center justify-center">

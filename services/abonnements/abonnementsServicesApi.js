@@ -126,23 +126,34 @@ const deleteAbonnementByIdService = (token, id) => {
 const generatePdfService = (token, id) => {
     return async () => {
         try {
-            const url = GENERATE_PDF.replace(':id', id);
-
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Erreur lors de la génération de PDF');
+            const response = await fetch(PathAbonnementsApi.GENERATE_PDF + id + "/document/generer-pdf", {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
             }
-            const data = await response.json();
-            return data;
+            });
+    
+            if (!response.ok) {
+            console.error('Erreur de réponse API:', response.statusText);
+            throw new Error('Erreur lors de la génération de PDF');
+            }
+    
+            const contentType = response.headers.get("Content-Type");
+            if (!contentType || !contentType.includes("application/pdf")) {
+            console.error('Le fichier retourné n\'est pas un PDF');
+            throw new Error('Le fichier retourné n\'est pas un PDF');
+            }
+    
+            const blob = await response.blob();
+            const urlPDF = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = urlPDF;
+            a.download = 'contrat_abonnement.pdf';
+            a.click();
+            window.URL.revokeObjectURL(urlPDF);
         } catch (error) {
             console.error("Erreur d'appel API pour générer le PDF :", error);
+            alert('Une erreur est survenue lors de la génération du PDF.');
         }
     };
 };

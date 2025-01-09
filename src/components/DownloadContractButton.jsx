@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 const DownloadContractButton = ({ contractUrl }) => {
+  console.log(contractUrl)
   return (
     <a href={contractUrl} download>
       <button>Télécharger le contrat</button>

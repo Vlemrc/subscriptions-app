@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Provider, useSelector } from 'react-redux';
-
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Account from './pages/Account';
@@ -11,16 +10,19 @@ import Subscription from './components/Subscription';
 import store from './redux/combineReducer';
 
 function App() {
-  
+
   const PrivateRoute = ({ children }) => {
     const { isAuthenticated } = useSelector((state) => state.login || {});
-    return isAuthenticated ? children : <Navigate to="/login" />;
+    const logged = localStorage.getItem("isAuthenticated");
+    const isLoggedIn = isAuthenticated || logged === "true";
+  
+    return isLoggedIn ? children : <Navigate to="/login" />;
   };
-
+  
   PrivateRoute.propTypes = {
     children: PropTypes.node.isRequired,
   };
-
+  
   return (
     <Provider store={store}>
       <Router>
@@ -36,6 +38,9 @@ function App() {
               </PrivateRoute>
             } 
           />
+          <Route path="/details-abonnement" element={<PrivateRoute>
+                <Subscription />
+              </PrivateRoute>}/>
           <Route 
             path="/account" 
             element={
