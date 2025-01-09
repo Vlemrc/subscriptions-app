@@ -11,7 +11,7 @@ const Home = () => {
   const user = userInfos.utilisateur.utilisateur;
   const token = userInfos.utilisateur.token;
 
-  dispatch(abonnementsService.allAbonnementsService(token));
+  dispatch(abonnementsService.getAllAbonnementsByUserIdService(token, user._id));
 
   const { loading, error } = useSelector((state) => state.subscriptions || {});
 
