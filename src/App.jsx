@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 
 import Login from './pages/Login';
 import Home from './pages/Home';
@@ -13,7 +13,7 @@ import store from './redux/combineReducer';
 function App() {
   
   const PrivateRoute = ({ children }) => {
-    const isAuthenticated = store.getState().auth.isAuthenticated;
+    const { isAuthenticated } = useSelector((state) => state.login || {});
     return isAuthenticated ? children : <Navigate to="/login" />;
   };
 
@@ -31,25 +31,25 @@ function App() {
           <Route 
             path="/" 
             element={
-              // <PrivateRoute>
+              <PrivateRoute>
                 <Home />
-              // </PrivateRoute>
+              </PrivateRoute>
             } 
           />
           <Route 
             path="/account" 
             element={
-              // <PrivateRoute>
+              <PrivateRoute>
                 <Account />
-              // </PrivateRoute>
+              </PrivateRoute>
             } 
           />
           <Route 
             path="/add-subscription" 
             element={
-              // <PrivateRoute>
+              <PrivateRoute>
                 <AddSubscription />
-              // </PrivateRoute>
+              </PrivateRoute>
             } 
           />
         </Routes>
