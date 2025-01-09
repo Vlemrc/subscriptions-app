@@ -63,7 +63,6 @@ const AddSubscription = () => {
       numeroClient: clientNumber,
       statut: status,
     };
-    console.log(newSubscription);
     dispatch(abonnementsService.createAbonnementService(token, newSubscription));
 
 
