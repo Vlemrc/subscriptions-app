@@ -1,17 +1,18 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import PropTypes from 'prop-types';
 
-const Button = ({ children, className, type }) => {
+const Button = ({ onClick, className, children, type }) => {
   return (
-    <button type={type} className={classNames("w-full bg-blue hover:opacity-80 text-white py-4 rounded-full", className)}>
+    <button onClick={onClick} type={type} className={classNames("w-full bg-blue hover:opacity-80 text-white py-4 rounded-full", className)}>
       {children}
     </button>
   );
-}
+};
 
 Button.propTypes = {
-  children: PropTypes.node.isRequired,
+  onClick: PropTypes.func,
   className: PropTypes.string,
+  children: PropTypes.node.isRequired,
   type: PropTypes.string,
 };
 
