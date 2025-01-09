@@ -18,7 +18,7 @@ const AddSubscription = () => {
 
   const userInfos = useSelector((state) => state.login || {});
   const user = userInfos.utilisateur.utilisateur;
-  console.log(user)
+  const token = userInfos.utilisateur.token;
 
   const { loading, error, success } = useSelector((state) => state.subscriptions || {});
 
@@ -43,10 +43,9 @@ const AddSubscription = () => {
       date_debut: startDate,
       montant: price,
       duree: duration,
-      frequence: frequency,
     };
 
-    dispatch(abonnementsService.createAbonnementService(newSubscription));
+    dispatch(abonnementsService.createAbonnementService(token, newSubscription));
     if (success) {
       navigate('/');
     }
