@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addSubscription } from '../redux/subscriptionSlice';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Logo from '../components/Logo';
 import Button from '../components/Button';
+import abonnementsService from '../../services/abonnements/abonnementsServicesApi';
 
 const AddSubscription = () => {
   const [name, setName] = useState('');
@@ -11,11 +12,25 @@ const AddSubscription = () => {
   const [price, setPrice] = useState('');
   const [duration, setDuration] = useState('');
   const [startDate, setStartDate] = useState('');
-  const userInfos = useSelector((state) => state.login || {});
-  const user = userInfos.utilisateur.utilisateur
-  const dispatch = useDispatch();
 
-  const handleSubmit = async (e) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const userInfos = useSelector((state) => state.login || {});
+  const user = userInfos.utilisateur.utilisateur;
+  console.log(user)
+
+  const { loading, error, success } = useSelector((state) => state.subscriptions || {});
+
+  const resetForm = () => {
+    setName('');
+    setFrequency('mensuel');
+    setPrice('');
+    setDuration('');
+    setStartDate('');
+  };
+
+  const handleAddSubscription = (e) => {
     e.preventDefault();
     if (!user) {
       console.error('Utilisateur non connecté');
@@ -28,27 +43,22 @@ const AddSubscription = () => {
       date_debut: startDate,
       montant: price,
       duree: duration,
+      frequence: frequency,
     };
 
-    try {
-        const response = await fetch(`${import.meta.env.VITE_API_URL}/subscriptions`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(newSubscription),
-        });
+    dispatch(abonnementsService.createAbonnementService(newSubscription));
+    if (success) {
+      navigate('/');
+    }
+  };
 
-        if (!response.ok) {
-            throw new Error('Erreur lors de l\'envoi des données');
-        }
-
-        const data = await response.json();
-            dispatch(addSubscription(data));
-        } catch (error) {
-            console.error('Erreur lors de l\'envoi des données :', error);
-        }
-    };
+  useEffect(() => {
+    if (success) {
+      setTimeout(() => {
+        dispatch(resetForm());
+      }, 3000); 
+    }
+  }, [success, dispatch]);
 
   return (
     <div>
@@ -56,7 +66,7 @@ const AddSubscription = () => {
       <Navbar activeItem="add-subscription" />
       <div className="bg-background">
         <h1 className="pb-2.5 text-2xl lg:pt-8 mx-6 font-digitalSansMediumItalic">Ajouter un abonnement</h1>
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5 bg-white m-6 mt-0 p-6 rounded-md">
+        <form onSubmit={handleAddSubscription} className="flex flex-col gap-5 bg-white m-6 mt-0 p-6 rounded-md">
           <div className="flex flex-col gap-2.5">
             <label className="font-digitalSansMediumItalic text-md">Nom de l&apos;abonnement</label>
             <input
@@ -113,6 +123,8 @@ const AddSubscription = () => {
           </div>
           <Button type="submit" className="mb-20">Ajouter</Button>
         </form>
+        {loading && <p>Chargement...</p>}
+        {error && <p className="text-red-500">{error}</p>}
       </div>
     </div>
   );

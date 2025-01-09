@@ -1,4 +1,4 @@
-import PathAbonnementsApi from './abonnementsRoutesApi';
+import PathAbonnementsApi from './abonnementsConstantesRoutesApi';
 
 // Appel au service de création d'un abonnement
 const createAbonnementService = (token, abonnementData) => {
