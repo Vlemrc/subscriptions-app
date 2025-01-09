@@ -11,7 +11,8 @@ const AddSubscription = () => {
   const [price, setPrice] = useState('');
   const [duration, setDuration] = useState('');
   const [startDate, setStartDate] = useState('');
-  const user = useSelector((state) => state.auth.user);
+  const userInfos = useSelector((state) => state.login || {});
+  const user = userInfos.utilisateur.utilisateur
   const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
