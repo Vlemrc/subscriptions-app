@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Button from '../components/Button';
 import Logo from '../components/Logo';
 import abonnementsService from '../../services/abonnements/abonnementsServicesApi';
+import { useEffect, useState } from 'react';
 
 const Home = () => {
 
@@ -10,13 +11,25 @@ const Home = () => {
   const userInfos = useSelector((state) => state.login || {});
   const user = userInfos.utilisateur.utilisateur;
   const token = userInfos.utilisateur.token;
+  const [subscriptions, setSubscriptions] = useState([]);
 
-  dispatch(abonnementsService.getAllAbonnementsByUserIdService(token, user._id));
+  useEffect(() => {
+    const fetchAbonnements = async () => {
+      if (token && user._id) {
+        try {
+          const result = await dispatch(abonnementsService.getAllAbonnementsByUserIdService(token, user._id));
+          console.log('Résultat de la promesse:', result);
+          setSubscriptions(result); 
+        } catch (error) {
+          console.error('Erreur lors de la récupération des abonnements:', error);
+        }
+      }
+    };
+
+    fetchAbonnements();
+  }, [dispatch, token, user._id]);
 
   const { loading, error } = useSelector((state) => state.subscriptions || {});
-
-  const subscriptions = useSelector((state) => state.subscriptions.subscriptions);
-  console.log(subscriptions)
 
   return (
     <div className="bg-background h-full">
