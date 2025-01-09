@@ -3,6 +3,7 @@ const initialState = {
     success: false, 
     error: null,   
     utilisateur: null,
+    isAuthenticated: false,
 };
 
 const loginReducer = (state = initialState, action) => {
@@ -14,6 +15,7 @@ const loginReducer = (state = initialState, action) => {
                 success: false,
                 error: null,
                 utilisateur: null,
+                isAuthenticated: false,
             };
         case 'LOGIN_SUCCESS':
             return {
@@ -22,13 +24,15 @@ const loginReducer = (state = initialState, action) => {
                 success: true,
                 error: null,
                 utilisateur: action.payload,
+                isAuthenticated: true,
             };
         case 'LOGIN_FAILURE':
             return {
                 ...state,
                 loading: false,
                 success: false,
-                error: action.payload, 
+                error: action.payload,
+                isAuthenticated: false,
             };
         case 'LOGIN_RESET':
             return initialState;
