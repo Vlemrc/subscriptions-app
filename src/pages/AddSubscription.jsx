@@ -8,10 +8,17 @@ import abonnementsService from '../../services/abonnements/abonnementsServicesAp
 
 const AddSubscription = () => {
   const [name, setName] = useState('');
-  const [frequency, setFrequency] = useState('mensuel');
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [postalCode, setPostalCode] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [price, setPrice] = useState('');
   const [duration, setDuration] = useState('');
-  const [startDate, setStartDate] = useState('');
+  const [phone, setPhone] = useState('');
+  const [clientNumber, setClientNumber] = useState('');
+  const [expiration, setExpiration] = useState('');
+  const [status, setStatus] = useState('actif');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,10 +31,17 @@ const AddSubscription = () => {
 
   const resetForm = () => {
     setName('');
-    setFrequency('mensuel');
+    setAddress('');
+    setCity('');
+    setPostalCode('');
+    setStartDate('');
+    setEndDate('');
     setPrice('');
     setDuration('');
-    setStartDate('');
+    setPhone('');
+    setClientNumber('');
+    setExpiration('');
+    setStatus('actif');
   };
 
   const handleAddSubscription = (e) => {
@@ -38,14 +52,24 @@ const AddSubscription = () => {
     }
 
     const newSubscription = {
-      utilisateur_id: user.id,
+      utilisateur_id: user._id,
       nom_service: name,
+      adresse: address,
+      ville: city,
+      codePostal: postalCode,
       date_debut: startDate,
+      date_fin: endDate,
       montant: price,
       duree: duration,
+      telephone: phone,
+      numeroClient: clientNumber,
+      expirationDans: expiration,
+      statut: status,
     };
-
+    console.log(newSubscription);
     dispatch(abonnementsService.createAbonnementService(token, newSubscription));
+
+
     if (success) {
       navigate('/');
     }
@@ -66,60 +90,114 @@ const AddSubscription = () => {
       <div className="bg-background">
         <h1 className="pb-2.5 text-2xl lg:pt-8 mx-6 font-digitalSansMediumItalic">Ajouter un abonnement</h1>
         <form onSubmit={handleAddSubscription} className="flex flex-col gap-5 bg-white m-6 mt-0 p-6 rounded-md">
-          <div className="flex flex-col gap-2.5">
-            <label className="font-digitalSansMediumItalic text-md">Nom de l&apos;abonnement</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Nom de ton nouvel abonnement"
-              required
-              className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
-            />
-          </div>
-          <div className="flex flex-col gap-2.5">
-            <label className="font-digitalSansMediumItalic text-md">Type d&apos;abonnement</label>
-            <div className="relative">
-                <select value={frequency} style={{ WebkitAppearance: 'none', MozAppearance: 'none' }} onChange={(e) => setFrequency(e.target.value)} className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'>
-                    <option value="mensuel">Mensuel</option>
-                    <option value="annuel">Annuel</option>
-                </select>
-                <div className="h-0.5 w-2 bg-black absolute right-6 top-1/2 -translate-y-1/2 -mt-0.5 rotate-45"></div>
-                <div className="h-0.5 w-2 bg-black absolute right-5 top-1/2 -translate-y-1/2 -mt-0.5 -rotate-45"></div>
-            </div>
-          </div>
-          <div className="flex flex-col gap-2.5">
-            <label className="font-digitalSansMediumItalic text-md">Prix (en €)</label>
-            <input
-              type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              placeholder="19.99"
-              required
-              className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
-            />
-          </div>
-          <div className="flex flex-col gap-2.5">
-            <label className="font-digitalSansMediumItalic text-md">Durée (en mois)</label>
-            <input
-              type="number"
-              value={duration}
-              onChange={(e) => setDuration(e.target.value)}
-              placeholder="12"
-              required
-              className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
-            />
-          </div>
-          <div className="flex flex-col gap-2.5">
-            <label className="font-digitalSansMediumItalic text-md">Date de début</label>
-            <input
-              type="date"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              required
-              className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
-            />
-          </div>
+          <label htmlFor="name" className="font-digitalSansMediumItalic text-md">Nom de l&apos;abonnement</label>
+          <input
+            type="text"
+            placeholder="Nom"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="address" className="font-digitalSansMediumItalic text-md">Adresse</label>
+          <input
+            type="text"
+            placeholder="Adresse"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="city" className="font-digitalSansMediumItalic text-md">Ville</label>
+          <input
+            type="text"
+            placeholder="Ville"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="postalCode" className="font-digitalSansMediumItalic text-md">Code Postal</label>
+          <input
+            type="text"
+            placeholder="Code Postal"
+            value={postalCode}
+            onChange={(e) => setPostalCode(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="startDate" className="font-digitalSansMediumItalic text-md">Date de début</label>
+          <input
+            type="date"
+            placeholder="Date de début"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="endDate" className="font-digitalSansMediumItalic text-md">Date de fin</label>
+          <input
+            type="date"
+            placeholder="Date de fin"
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="price" className="font-digitalSansMediumItalic text-md">Prix</label>
+          <input
+            type="number"
+            placeholder="Prix"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="duration" className="font-digitalSansMediumItalic text-md">Durée (en mois)</label>
+          <input
+            type="number"
+            placeholder="Durée"
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="phone" className="font-digitalSansMediumItalic text-md">Téléphone</label>
+          <input
+            type="text"
+            placeholder="Téléphone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="clientNumber" className="font-digitalSansMediumItalic text-md">Numéro Client</label>
+          <input
+            type="text"
+            placeholder="Numéro Client"
+            value={clientNumber}
+            onChange={(e) => setClientNumber(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="expiration" className="font-digitalSansMediumItalic text-md">Expiration Dans</label>
+          <input
+            type="text"
+            placeholder="Expiration Dans"
+            value={expiration}
+            onChange={(e) => setExpiration(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
+          <label htmlFor="status" className="font-digitalSansMediumItalic text-md">Statut</label>
+          <input
+            type="text"
+            placeholder="Statut"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+            required
+            className='mb-2 border border-border pl-[25px] rounded-full bg-background text-secondary px-3 py-5 w-full'
+          />
           <Button type="submit" className="mb-20">Ajouter</Button>
         </form>
         {loading && <p>Chargement...</p>}
