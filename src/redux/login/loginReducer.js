@@ -18,6 +18,8 @@ const loginReducer = (state = initialState, action) => {
                 isAuthenticated: false,
             };
         case 'LOGIN_SUCCESS':
+            localStorage.setItem('user', JSON.stringify(action.payload));
+            localStorage.setItem('isAuthenticated', JSON.stringify(true));
             return {
                 ...state,
                 loading: false,
