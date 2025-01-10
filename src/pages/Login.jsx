@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import Logo from '../components/Logo';
 import utilisateursService from '../../services/utilisateurs/utilisateursServicesApi';
+import Loading from '../components/Loading';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -56,7 +57,7 @@ const Login = () => {
           <p className="tracking-tighter text-slate-400 text-xs text-right font-digitalSansMedium text-darkgray mb-8">Mot de passe oublié ?</p>
           <Button>Se connecter</Button>
         </form>
-        {loading && <p>Connexion en cours...</p>}
+        {loading && <Loading />}
         {success && <p>Connexion réussie !</p>}
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <p className="mt-4 text-center">
