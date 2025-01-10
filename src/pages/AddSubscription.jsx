@@ -23,8 +23,8 @@ const AddSubscription = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const userInfos = useSelector((state) => state.login || {});
-  const user = userInfos.utilisateur.utilisateur;
+ const user = JSON.parse(localStorage.getItem("user"));
+const token = localStorage.getItem("token");
   const token = userInfos.utilisateur.token;
 
   const { loading, error, success } = useSelector((state) => state.subscriptions || {});
