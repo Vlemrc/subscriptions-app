@@ -7,7 +7,7 @@ import Subscription from '../components/Subscription'; // Importez le composant 
 import abonnementsService from '../../services/abonnements/abonnementsServicesApi';
 import { useNavigate } from 'react-router-dom';
 
-const Home = () => {
+const Subscriptions = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -39,17 +39,22 @@ const Home = () => {
 
   const { loading, error } = useSelector((state) => state?.subscriptions || {});
 
+  function findAbonnementById(id) {
+    const abonnements = JSON.parse(localStorage.getItem('abonnements') || '[]');
+    return abonnements.find(abonnement => abonnement.id === id);
+  }
+  const [id, setId] = useState("");
   const handleEditClick = (subscription) => {
     console.log('handleEditClick called with:', subscription);
-    navigate('/details-abonnement');
+    setId(subscription.id);
+    navigate(`/account/abonnements/${subscription.id}`); 
     setSelectedSubscription(subscription);
     setIsVisibleSub(true);
   };
-
+  
   const handleCancel = () => {
     console.log('handleCancel called');
     setIsVisibleSub(false);
-    setSelectedSubscription(null);
   };
 
   return (
@@ -84,7 +89,7 @@ const Home = () => {
       )}
       {isVisibleSub && selectedSubscription && (
         <Subscription 
-          subscription={selectedSubscription} 
+          id={id} 
           onCancel={handleCancel} 
         />
       )}
@@ -92,4 +97,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Subscriptions;

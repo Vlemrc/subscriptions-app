@@ -51,7 +51,15 @@ const Subscription = () => {
   const downloadClick = useCallback(() => {
    dispatch(abonnementsService.generatePdfService(token, abonnement.id));
  }, [dispatch, token, abonnement]);
-
+  
+  const handleDeleteSubscription = async (e) => {
+    e.preventDefault();
+    dispatch(abonnementsService.deleteAbonnementByIdService(token, subscriptionDetails._id));
+    console.log("delete")
+  }
+  const downloadClick = () => {
+    dispatch(abonnementsService.generatePdfService(token, subscriptionDetails.id));
+  };
 
   const navigate = useNavigate();
 
@@ -68,6 +76,9 @@ const Subscription = () => {
       <div className="p-6"> 
       <h1 className="pb-2.5 text-2xl uppercase font-digitalSansMediumItalic">{abonnement?.nom_service}</h1>
 
+
+      <div className="p-6"> 
+      <h1 className="pb-2.5 text-2xl uppercase font-digitalSansMediumItalic">{abonnement?.nom_service}</h1>
         {isEditing ? (
           <EditSubscriptionForm subscription={abonnement} onSave={handleSave} onCancel={handleCancel} />
         ) : (
@@ -91,8 +102,10 @@ const Subscription = () => {
               <button onClick={handleDeleteSubscription} className="block mt-2 mb-6 text-right tracking-tighter font-digitalSansMedium text-red-600">Supprimer</button>
               <a onClick={() => setIsEditing(true)} className="block mt-2 mb-6 text-right tracking-tighter font-digitalSansMedium text-slate-400">Modifier</a>
             </div>
-            <a href={abonnement?.contractUrl} target="_blank" download>
 
+            <a href={abonnement?.contractUrl} target="_blank" download>
+            <BtnArrowBack onClick={handleBackClick} />
+            <a href={subscription.contractUrl} target="_blank" download>
               <Button onClick={downloadClick}>Télécharger le contrat</Button>
             </a>
           </>
