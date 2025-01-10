@@ -32,7 +32,7 @@ const createUserService = (userData) => {
 
 // Appel au service de connexion d'un utilisateur.
 const connexionUserService = (userCredentials) => {
-    return async (dispatch) => {
+    return async (dispatch, navigate) => {
         dispatch(loginRequest());
         try {
             const response = await fetch(PathUtilisateursApi.CONNEXION_USER, {
@@ -48,6 +48,7 @@ const connexionUserService = (userCredentials) => {
             }
             const data = await response.json();
             dispatch(loginSuccess(data));
+            navigate('/account');
         } catch (error) {
             console.error("Erreur d'appel API pour la connexion de l'utilisateur :", error);
             dispatch(loginFailure(error.message)); 

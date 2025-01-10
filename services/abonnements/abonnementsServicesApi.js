@@ -46,29 +46,27 @@ const allAbonnementsService = (token) => {
 }
   
 const getAbonnementByIdService = (token, id) => {
-    return async () => {
-        try {
-            const url = PathAbonnementsApi.GET_ABONNEMENT_BY_ID + id;
-            const response = await fetch(url, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`,
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error('Erreur lors de la récupération de l\'abonnement');
-            }
-
-            const data = await response.json();
-            return data;
-
-        } catch (error) {
-            console.error("Erreur d'appel API pour récupérer l'abonnement par ID :", error);
+    console.log(id);
+    const url = PathAbonnementsApi.GET_ABONNEMENT_BY_ID + id;
+    
+    return fetch(url, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
         }
-    };
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erreur lors de la récupération de l\'abonnement');
+        }
+        return response.json();
+    })
+    .catch(error => {
+        console.error("Erreur d'appel API pour récupérer l'abonnement par ID :", error);
+    });
 };
+
 
 // Appel au service de récupération des abonnements d'un utilisateur
 const getAllAbonnementsByUserIdService = (token, userId) => {

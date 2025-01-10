@@ -16,7 +16,7 @@ const Account = () => {
   const handleLogout = () => {
     dispatch(logout());
     localStorage.clear();
-    navigate('/login');
+    navigate('/');
   };
 
   return (

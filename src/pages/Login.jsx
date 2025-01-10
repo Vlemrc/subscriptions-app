@@ -10,8 +10,9 @@ const Login = () => {
   const [motDePasse, setMotDePasse] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, success } = useSelector((state) => state.login || {});
-
+  const { loading, error, success, utilisateur } = useSelector((state) => state.login || {});
+  console.log(success)
+  console.log(utilisateur)
   const handleLogin = (e) => {
     e.preventDefault();
     const userData = {
@@ -19,14 +20,11 @@ const Login = () => {
       motDePasse,
     };
     dispatch(utilisateursService.connexionUserService(userData));
+    navigate('/account');
   }
   useEffect(() => {
-    if (success) {
-      navigate('/'); 
-    }
-  }, [success, navigate]); 
-  
-  // console.log(utilisateur) // tu auras les infos comme le token etc tu devras stocké certaines infos car tu en auras besoin
+    navigate('/account');
+  }, [success, navigate]);
 
   return (
     <div className="flex flex-col items-center justify-center h-full p-6">
