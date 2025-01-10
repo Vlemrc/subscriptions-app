@@ -5,6 +5,7 @@ import Navbar from '../components/Navbar';
 import Logo from '../components/Logo';
 import Button from '../components/Button';
 import abonnementsService from '../../services/abonnements/abonnementsServicesApi';
+import BtnArrowBack from '../components/BtnArrowBack';
 
 const AddSubscription = () => {
   const [name, setName] = useState('');
@@ -83,6 +84,7 @@ const AddSubscription = () => {
     <div>
       <div className="w-full flex justify-center p-8 lg:p-0 bg-background"><Logo className="w-24 lg:w-0" /></div>
       <Navbar activeItem="add-subscription" />
+      <BtnArrowBack />
       <div className="bg-background">
         <h1 className="pb-2.5 text-2xl lg:pt-8 mx-6 font-digitalSansMediumItalic">Ajouter un abonnement</h1>
         <form onSubmit={handleAddSubscription} className="flex flex-col gap-5 bg-white m-6 mt-0 p-6 rounded-md">

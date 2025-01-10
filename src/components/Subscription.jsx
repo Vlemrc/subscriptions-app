@@ -3,6 +3,7 @@ import Button from "./Button";
 import Logo from "./Logo";
 import Navbar from "./Navbar";
 import EditSubscriptionForm from './EditSubscriptionForm';
+import BtnArrowBack from './BtnArrowBack';
 import abonnementsService from '../../services/abonnements/abonnementsServicesApi';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -28,6 +29,7 @@ const Subscription = ( subscription ) => {
   const handleDeleteSubscription = async (e) => {
     e.preventDefault();
     dispatch(abonnementsService.deleteAbonnementByIdService(token, subscriptionDetails._id));
+    console.log("delete")
   }
   const downloadClick = () => {
     dispatch(abonnementsService.generatePdfService(token, subscriptionDetails.id));
@@ -44,6 +46,7 @@ const Subscription = ( subscription ) => {
         <Logo className="w-24 lg:w-0" />
       </div>
       <Navbar activeItem="home" />
+      <BtnArrowBack />
       <div className="p-6">
         <h1 className="pb-2.5 text-2xl uppercase font-digitalSansMediumItalic">{subscriptionDetails?.nom_service}</h1>
         {isEditing ? (
@@ -68,8 +71,8 @@ const Subscription = ( subscription ) => {
             <div className="flex flex-row justify-between">
               <button onClick={handleDeleteSubscription} className="block mt-2 mb-6 text-right tracking-tighter font-digitalSansMedium text-red-600">Supprimer</button>
               <a onClick={() => setIsEditing(true)} className="block mt-2 mb-6 text-right tracking-tighter font-digitalSansMedium text-slate-400">Modifier</a>
-              <button onClick={handleBackClick}>Retour</button>
             </div>
+            <BtnArrowBack onClick={handleBackClick} />
             <a href={subscription.contractUrl} target="_blank" download>
               <Button onClick={downloadClick}>Télécharger le contrat</Button>
             </a>

@@ -19,9 +19,13 @@ const Account = () => {
     navigate('/login');
   };
 
+  const handleEditClick = () => {
+    navigate('/edit-account', { state: { utilisateur } });
+  };
+
   return (
     <div className="bg-background h-full">
-      <div className="w-full absolute"><Logo className="w-24 mt-6 ml-6 lg:hidden" /></div>
+      <div className="w-full absolute flex justify-center"><Logo className="w-24 mt-8 lg:hidden" /></div>
       <Navbar activeItem='account' />
       <div className="p-6 flex flex-col items-center justify-center -translate-y-[5%] h-full">
         <svg className="rounded-full" width="130" height="130" viewBox="0 0 130 130" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,7 +41,7 @@ const Account = () => {
         </div>
         <div className="mt-3 flex flex-row justify-between w-full">
             <button onClick={handleLogout} className="font-digitalSansMediumItalic text-red-600">Me déconnecter</button>
-          <a onClick={() => navigate('/edit-account')} className="tracking-tighter font-digitalSansMedium text-slate-400">Modifier</a>
+            <a onClick={handleEditClick} className="tracking-tighter font-digitalSansMedium text-slate-400">Modifier</a>
         </div>
       </div>
     </div>
