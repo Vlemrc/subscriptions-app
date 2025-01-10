@@ -3,13 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from "../components/Navbar";
 import { logout } from '../redux/authSlice';
 import Logo from '../components/Logo';
+import { useEffect, useState } from 'react';
 
 const Account = () => {
   const userInfos = useSelector((state) => state.login || {});
   const userStorage = JSON.parse(localStorage.getItem("user")) || {};
-  const utilisateur = userInfos != null ? userInfos?.utilisateur?.utilisateur : userStorage?.utilisateur;
+  const [utilisateur, setUtilisateur] = useState(); 
+  
   console.log(userInfos)
-  console.log(utilisateur)
+  console.log(userStorage)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,6 +25,9 @@ const Account = () => {
   const handleEditClick = () => {
     navigate('/edit-account', { state: { utilisateur } });
   };
+  useEffect(() => {
+      setUtilisateur(userStorage.utilisateur);
+  }, []);
 
   return (
     <div className="bg-background h-full">

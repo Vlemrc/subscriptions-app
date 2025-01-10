@@ -13,36 +13,31 @@ const Subscriptions = () => {
 
   const userInfos = useSelector((state) => state?.login) || {};
   const userStorage = JSON.parse(localStorage.getItem("user")) || {};
-
-  const user = userInfos?.utilisateur || userStorage?.utilisateur || null;
+  console.log(userStorage)
+  const user = userStorage?.utilisateur;
   const token = userInfos?.token || userStorage?.token || null;
 
   const [subscriptions, setSubscriptions] = useState([]);
   const [selectedSubscription, setSelectedSubscription] = useState(null);
   const [isVisibleSub, setIsVisibleSub] = useState(false);
-
-  useEffect(() => {
-    const fetchAbonnements = async () => {
-      if (token && user && user._id) {
-        try {
-          const result = await dispatch(abonnementsService.getAllAbonnementsByUserIdService(token, user._id));
-          localStorage.setItem("abonnements", JSON.stringify(result)); 
-          setSubscriptions(result); 
-        } catch (error) {
-          console.error('Erreur lors de la récupération des abonnements:', error);
-        }
+  const fetchAbonnements = async () => {
+    if (token && user && user._id) {
+      try {
+        const result = await dispatch(abonnementsService.getAllAbonnementsByUserIdService(token, user._id));
+        localStorage.setItem("abonnements", JSON.stringify(result)); 
+        setSubscriptions(result); 
+      } catch (error) {
+        console.error('Erreur lors de la récupération des abonnements:', error);
       }
-    };
-
+    }
+  };
+  useEffect(() => {
     fetchAbonnements();
   }, [dispatch, token, user?._id]);
-
+  
+  console.log(subscriptions)
   const { loading, error } = useSelector((state) => state?.subscriptions || {});
 
-  function findAbonnementById(id) {
-    const abonnements = JSON.parse(localStorage.getItem('abonnements') || '[]');
-    return abonnements.find(abonnement => abonnement.id === id);
-  }
   const [id, setId] = useState("");
   const handleEditClick = (subscription) => {
     console.log('handleEditClick called with:', subscription);
@@ -65,7 +60,7 @@ const Subscriptions = () => {
             <Logo className="w-24 lg:w-0" />
           </div>
           <Navbar activeItem="home" />
-          <div className="p-6 pb-[100px]">
+          <div className="p-6">
             <h1 className="pb-2.5 text-2xl font-digitalSansMediumItalic">Mes abonnements</h1>
             <div className="flex flex-col gap-5">
               {subscriptions?.map((item, index) => (
@@ -96,5 +91,4 @@ const Subscriptions = () => {
     </div>
   );
 };
-
 export default Subscriptions;

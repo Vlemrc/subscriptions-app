@@ -50,7 +50,7 @@ const AddSubscription = () => {
       console.error('Utilisateur non connecté');
       return;
     }
-
+    console.log(token)
     const newSubscription = {
       utilisateur_id: user._id,
       nom_service: name,
@@ -65,7 +65,7 @@ const AddSubscription = () => {
       numeroClient: clientNumber,
       statut: status,
     };
-    dispatch(abonnementsService.createAbonnementService(token, newSubscription));
+    dispatch(abonnementsService.createAbonnementService(user?.token, newSubscription));
 
 
     if (success) {
@@ -79,7 +79,7 @@ const AddSubscription = () => {
         dispatch(resetForm());
       }, 3000); 
     }
-  }, [success, dispatch]);
+  }, [success, dispatch, user]);
 
   return (
     <div>
