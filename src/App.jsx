@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Account from './pages/Account';
 import PropTypes from 'prop-types';
 import AddSubscription from './pages/AddSubscription';
+import EditAccount from './components/EditAccount';
 import Register from './pages/Register';
 import Subscription from './components/Subscription';
 import store from './redux/combineReducer';
@@ -56,6 +57,14 @@ function App() {
                 <AddSubscription />
               </PrivateRoute>
             } 
+          />
+          <Route 
+            path="/edit-account" 
+            element={
+              <PrivateRoute>
+                <EditAccount />
+              </PrivateRoute>
+            }
           />
         </Routes>
       </Router>

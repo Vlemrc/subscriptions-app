@@ -1,20 +1,27 @@
 import { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import Button from './Button';
 import Navbar from './Navbar';
 import Logo from './Logo';
 import BtnArrowBack from './BtnArrowBack';
 import { useNavigate, useLocation } from 'react-router-dom';
+import utilisateursService from '../../services/utilisateurs/utilisateursServicesApi';
+import { useDispatch, useSelector } from 'react-redux';
 
-const EditAccount = ({ onSave }) => {
+const EditAccount = () => {
   const location = useLocation();
   const utilisateur = location.state?.utilisateur;
+  const userInfos = useSelector((state) => state?.login) || {};
+  const userStorage = JSON.parse(localStorage.getItem("user")) || {};
+  const token = userInfos?.token || userStorage?.token || null;
+  const userId = userInfos.utilisateur.utilisateur._id
 
   const [civilite, setCivilite] = useState('');
   const [prenom, setPrenom] = useState('');
   const [nom, setNom] = useState('');
   const [email, setEmail] = useState('');
   const [motDePasse, setMotDePasse] = useState('');
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (utilisateur) {
@@ -35,10 +42,9 @@ const EditAccount = ({ onSave }) => {
       email,
       motDePasse,
     };
-    onSave(updatedUser);
+    dispatch(utilisateursService.updateUserByIdService(token, userId, updatedUser))
   };
 
-  const navigate = useNavigate();
   const handleBackClick = () => {
     navigate(-1); 
   };
@@ -114,11 +120,6 @@ const EditAccount = ({ onSave }) => {
       </div>
     </>
   );
-};
-
-EditAccount.propTypes = {
-  onSave: PropTypes.func,
-  onCancel: PropTypes.func,
 };
 
 export default EditAccount;

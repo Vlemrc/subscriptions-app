@@ -5,7 +5,7 @@ import Button from '../components/Button';
 import Logo from '../components/Logo';
 import Subscription from '../components/Subscription'; // Importez le composant Subscription
 import abonnementsService from '../../services/abonnements/abonnementsServicesApi';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
   const dispatch = useDispatch();
