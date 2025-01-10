@@ -65,7 +65,7 @@ const Subscriptions = () => {
             <Logo className="w-24 lg:w-0" />
           </div>
           <Navbar activeItem="home" />
-          <div className="p-6">
+          <div className="p-6 pb-[100px]">
             <h1 className="pb-2.5 text-2xl font-digitalSansMediumItalic">Mes abonnements</h1>
             <div className="flex flex-col gap-5">
               {subscriptions?.map((item, index) => (

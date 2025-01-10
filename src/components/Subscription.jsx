@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect  } from 'react';
+import { useState, useCallback, useEffect  } from 'react';
 import Button from "./Button";
 import Logo from "./Logo";
 import Navbar from "./Navbar";
@@ -36,6 +36,7 @@ const Subscription = () => {
   }, [dispatch]);
   
   const handleSave = (updatedSubscription) => {
+    console.log(updatedSubscription)
     setIsEditing(false);
   };
 
@@ -51,15 +52,6 @@ const Subscription = () => {
   const downloadClick = useCallback(() => {
    dispatch(abonnementsService.generatePdfService(token, abonnement.id));
  }, [dispatch, token, abonnement]);
-  
-  const handleDeleteSubscription = async (e) => {
-    e.preventDefault();
-    dispatch(abonnementsService.deleteAbonnementByIdService(token, subscriptionDetails._id));
-    console.log("delete")
-  }
-  const downloadClick = () => {
-    dispatch(abonnementsService.generatePdfService(token, subscriptionDetails.id));
-  };
 
   const navigate = useNavigate();
 
@@ -73,44 +65,38 @@ const Subscription = () => {
         <Logo className="w-24 lg:w-0" />
       </div>
       <Navbar activeItem="home" />
-      <div className="p-6"> 
-      <h1 className="pb-2.5 text-2xl uppercase font-digitalSansMediumItalic">{abonnement?.nom_service}</h1>
-
-
-      <div className="p-6"> 
-      <h1 className="pb-2.5 text-2xl uppercase font-digitalSansMediumItalic">{abonnement?.nom_service}</h1>
-        {isEditing ? (
-          <EditSubscriptionForm subscription={abonnement} onSave={handleSave} onCancel={handleCancel} />
-        ) : (
-          <div className="bg-white w-full rounded-md p-6 flex flex-col gap-2.5">
-            <p className="flex flex-row justify-between">Nom de l&apos;abonnement <span className="font-digitalSansMediumItalic text-right">{abonnement?.nom_service}</span></p>
-            <p className="flex flex-row justify-between">Adresse <span className="font-digitalSansMediumItalic text-right">{abonnement?.adresse}</span></p>
-            <p className="flex flex-row justify-between">Ville <span className="font-digitalSansMediumItalic text-right">{abonnement?.ville}</span></p>
-            <p className="flex flex-row justify-between">Code postal <span className="font-digitalSansMediumItalic text-right">{abonnement?.codePostal}</span></p>
-            <p className="flex flex-row justify-between">Date de début <span className="font-digitalSansMediumItalic text-right">{abonnement?.date_debut}</span></p>
-            <p className="flex flex-row justify-between">Date de fin <span className="font-digitalSansMediumItalic text-right">{abonnement?.date_fin}</span></p>
-            <p className="flex flex-row justify-between">Montant <span className="font-digitalSansMediumItalic text-right">{abonnement?.montant} €</span></p>
-            <p className="flex flex-row justify-between">Durée (en mois) <span className="font-digitalSansMediumItalic text-right">{abonnement?.duree}</span></p>
-            <p className="flex flex-row justify-between">Téléphone <span className="font-digitalSansMediumItalic text-right">{abonnement?.telephone}</span></p>
-            <p className="flex flex-row justify-between">Numéro de client <span className="font-digitalSansMediumItalic text-right">{abonnement?.numeroClient}</span></p>
-            <p className="flex flex-row justify-between">Statut <span className="font-digitalSansMediumItalic text-right text-green-600">{abonnement?.statut}</span></p>
-          </div>
-        )}
-        {!isEditing && (
-          <>
-            <div className="flex flex-row justify-between">
-              <button onClick={handleDeleteSubscription} className="block mt-2 mb-6 text-right tracking-tighter font-digitalSansMedium text-red-600">Supprimer</button>
-              <a onClick={() => setIsEditing(true)} className="block mt-2 mb-6 text-right tracking-tighter font-digitalSansMedium text-slate-400">Modifier</a>
+        <div className="p-6"> 
+          <h1 className="pb-2.5 text-2xl uppercase font-digitalSansMediumItalic">{abonnement?.nom_service}</h1>
+          {isEditing ? (
+            <EditSubscriptionForm subscription={abonnement} onSave={handleSave} onCancel={handleCancel} />
+          ) : (
+            <div className="bg-white w-full rounded-md p-6 flex flex-col gap-2.5">
+              <p className="flex flex-row justify-between">Nom de l&apos;abonnement <span className="font-digitalSansMediumItalic text-right">{abonnement?.nom_service}</span></p>
+              <p className="flex flex-row justify-between">Adresse <span className="font-digitalSansMediumItalic text-right">{abonnement?.adresse}</span></p>
+              <p className="flex flex-row justify-between">Ville <span className="font-digitalSansMediumItalic text-right">{abonnement?.ville}</span></p>
+              <p className="flex flex-row justify-between">Code postal <span className="font-digitalSansMediumItalic text-right">{abonnement?.codePostal}</span></p>
+              <p className="flex flex-row justify-between">Date de début <span className="font-digitalSansMediumItalic text-right">{abonnement?.date_debut}</span></p>
+              <p className="flex flex-row justify-between">Date de fin <span className="font-digitalSansMediumItalic text-right">{abonnement?.date_fin}</span></p>
+              <p className="flex flex-row justify-between">Montant <span className="font-digitalSansMediumItalic text-right">{abonnement?.montant} €</span></p>
+              <p className="flex flex-row justify-between">Durée (en mois) <span className="font-digitalSansMediumItalic text-right">{abonnement?.duree}</span></p>
+              <p className="flex flex-row justify-between">Téléphone <span className="font-digitalSansMediumItalic text-right">{abonnement?.telephone}</span></p>
+              <p className="flex flex-row justify-between">Numéro de client <span className="font-digitalSansMediumItalic text-right">{abonnement?.numeroClient}</span></p>
+              <p className="flex flex-row justify-between">Statut <span className="font-digitalSansMediumItalic text-right text-green-600">{abonnement?.statut}</span></p>
             </div>
-
-            <a href={abonnement?.contractUrl} target="_blank" download>
-            <BtnArrowBack onClick={handleBackClick} />
-            <a href={subscription.contractUrl} target="_blank" download>
-              <Button onClick={downloadClick}>Télécharger le contrat</Button>
-            </a>
-          </>
-        )}
-      </div>
+          )}
+          {!isEditing && (
+            <>
+              <div className="flex flex-row justify-between">
+                <button onClick={handleDeleteSubscription} className="block mt-2 mb-6 text-right tracking-tighter font-digitalSansMedium text-red-600">Supprimer</button>
+                <a onClick={() => setIsEditing(true)} className="block mt-2 mb-6 text-right tracking-tighter font-digitalSansMedium text-slate-400">Modifier</a>
+              </div>
+              <BtnArrowBack onClick={handleBackClick} />
+              <a href={abonnement?.contractUrl} target="_blank" download>
+                <Button onClick={downloadClick}>Télécharger le contrat</Button>
+              </a>
+            </>
+          )}
+        </div>
     </div>
   );
 };
