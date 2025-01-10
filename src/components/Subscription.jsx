@@ -43,7 +43,6 @@ const Subscription = () => {
     setIsEditing(false);
   };
 
-<<<<<<< HEAD
  const handleDeleteSubscription = useCallback(async (e) => {
    e.preventDefault();
    dispatch(abonnementsService.deleteAbonnementByIdService(token, abonnement._id));
@@ -52,8 +51,7 @@ const Subscription = () => {
   const downloadClick = useCallback(() => {
    dispatch(abonnementsService.generatePdfService(token, abonnement.id));
  }, [dispatch, token, abonnement]);
-
-=======
+  
   const handleDeleteSubscription = async (e) => {
     e.preventDefault();
     dispatch(abonnementsService.deleteAbonnementByIdService(token, subscriptionDetails._id));
@@ -62,7 +60,7 @@ const Subscription = () => {
   const downloadClick = () => {
     dispatch(abonnementsService.generatePdfService(token, subscriptionDetails.id));
   };
->>>>>>> 885297f5a44432edc9c153c49d84a03c8417f883
+
   const navigate = useNavigate();
 
   const handleBackClick = useCallback(() => {
@@ -75,14 +73,12 @@ const Subscription = () => {
         <Logo className="w-24 lg:w-0" />
       </div>
       <Navbar activeItem="home" />
-<<<<<<< HEAD
       <div className="p-6"> 
       <h1 className="pb-2.5 text-2xl uppercase font-digitalSansMediumItalic">{abonnement?.nom_service}</h1>
-=======
-      <BtnArrowBack />
-      <div className="p-6">
-        <h1 className="pb-2.5 text-2xl uppercase font-digitalSansMediumItalic">{subscriptionDetails?.nom_service}</h1>
->>>>>>> 885297f5a44432edc9c153c49d84a03c8417f883
+
+
+      <div className="p-6"> 
+      <h1 className="pb-2.5 text-2xl uppercase font-digitalSansMediumItalic">{abonnement?.nom_service}</h1>
         {isEditing ? (
           <EditSubscriptionForm subscription={abonnement} onSave={handleSave} onCancel={handleCancel} />
         ) : (
@@ -106,12 +102,10 @@ const Subscription = () => {
               <button onClick={handleDeleteSubscription} className="block mt-2 mb-6 text-right tracking-tighter font-digitalSansMedium text-red-600">Supprimer</button>
               <a onClick={() => setIsEditing(true)} className="block mt-2 mb-6 text-right tracking-tighter font-digitalSansMedium text-slate-400">Modifier</a>
             </div>
-<<<<<<< HEAD
+
             <a href={abonnement?.contractUrl} target="_blank" download>
-=======
             <BtnArrowBack onClick={handleBackClick} />
             <a href={subscription.contractUrl} target="_blank" download>
->>>>>>> 885297f5a44432edc9c153c49d84a03c8417f883
               <Button onClick={downloadClick}>Télécharger le contrat</Button>
             </a>
           </>
